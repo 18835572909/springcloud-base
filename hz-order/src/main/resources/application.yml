@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: order-service
+
+server:
+  port: 30001
+
+mybatis-plus:
+  mapper-locations: /xml/**.xml

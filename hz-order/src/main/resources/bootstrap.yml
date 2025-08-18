@@ -1,0 +1,76 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 120.27.156.17:8848   # Nacos服务地址
+        namespace: fb8f1866-cf38-46a8-907f-c5964e9b6e9d        # 命名空间
+        group: DEFAULT_GROUP        # 分组
+        username: nacos
+        password: c5964e9b6e9d
+      config:
+        serverAddr: ${spring.cloud.nacos.discovery.server-addr}
+        username: ${spring.cloud.nacos.discovery.username}
+        password: ${spring.cloud.nacos.discovery.password}
+        file-extension: yml
+        namespace: ${spring.cloud.nacos.discovery.namespace}
+        group: ${spring.cloud.nacos.discovery.group}
+        # 加载优先级：  ext-config.yml > mybatis-plus.yml > ... > data-source.yml
+        # extension-configs：  从上到下
+        # shared-configs：     从下到上
+        extension-configs:
+          - data-id: ext-item-config.yml
+            group: DEFAULT_GROUP
+            refresh: true
+        shared-configs:
+          - data-id: data-source.yml
+            group: DEFAULT_GROUP
+            refresh: true
+          - data-id: web-config.yml
+            group: DEFAULT_GROUP
+            refresh: true
+          - data-id: redis.yml
+            group: DEFAULT_GROUP
+            refresh: true
+          - data-id: mybatis-plus.yml
+            group: DEFAULT_GROUP
+            refresh: true
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://120.27.156.17:3306/db_1?useUnicode=true&characterEncoding=utf-8
+#      driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+#      url: jdbc:p6spy:mysql://120.27.156.17:3306/db_1?useUnicode=true&characterEncoding=utf-8
+      username: root
+      password: nZHdc8WxdK3Y
+      # 初始化建立物理连接个数
+      initial-size: 5
+      # 最小连接数
+      min-idle: 5
+      # 最大连接数
+      max-active: 10
+      # 最大等待时间，单位毫秒
+      max-wait: 6000
+      # 检测连接是否有效
+      time-between-eviction-runs-millis: 60000
+      # 连接在池中的最小生存时间
+      min-evictable-idle-time-millis: 300000
+      # 检测连接是否有效的SQL 要求是一个查询语句
+      validation-query: SELECT 1 FROM DUAL
+      # 这些参数控制何时检测连接的有效性。
+      test-while-idle: true
+      # 配置可视化控制台页面
+      stat-view-servlet:
+        enabled: true
+        # 访问druid监控页面的地址
+        url-pattern: /druid/*
+        # IP 白名单 没有配置或者为空则允许所有访问
+        allow:
+        # IP黑名单，若白名单也存在则优先使用
+        deny:
+        # 禁用重置按钮
+        reset-enable: false
+        # 登录所用的用户名与密码
+        login-username: admin
+        login-password: 123456

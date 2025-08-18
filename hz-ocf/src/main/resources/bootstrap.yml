@@ -1,0 +1,36 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 120.27.156.17:8848   # Nacos服务地址
+        namespace: fb8f1866-cf38-46a8-907f-c5964e9b6e9d        # 命名空间
+        group: DEFAULT_GROUP        # 分组
+        username: nacos
+        password: c5964e9b6e9d
+      config:
+        serverAddr: ${spring.cloud.nacos.discovery.server-addr}
+        username: ${spring.cloud.nacos.discovery.username}
+        password: ${spring.cloud.nacos.discovery.password}
+        file-extension: yml
+        namespace: ${spring.cloud.nacos.discovery.namespace}
+        group: ${spring.cloud.nacos.discovery.group}
+        # 加载优先级：  ext-config.yml > mybatis-plus.yml > ... > data-source.yml
+        # extension-configs：  从上到下
+        # shared-configs：     从下到上
+        extension-configs:
+          - data-id: ext-ocf-config.yml
+            group: DEFAULT_GROUP
+            refresh: true
+        shared-configs:
+          - data-id: data-source.yml
+            group: DEFAULT_GROUP
+            refresh: true
+          - data-id: web-config.yml
+            group: DEFAULT_GROUP
+            refresh: true
+          - data-id: redis.yml
+            group: DEFAULT_GROUP
+            refresh: true
+          - data-id: mybatis-plus.yml
+            group: DEFAULT_GROUP
+            refresh: true
