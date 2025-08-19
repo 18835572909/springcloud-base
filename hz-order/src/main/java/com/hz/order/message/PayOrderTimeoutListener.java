@@ -6,6 +6,7 @@ import com.hz.base.pojo.PayOrderTimeoutDelayMessage;
 import com.hz.base.request.CancelOrderRequest;
 import com.hz.order.mapper.OrderInfoMapper;
 import com.hz.order.service.OrderAfterSaleService;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Date;
  * @date 2025-08-18 星期一 19:09:41
  * @description MQ消费
  */
+@Slf4j
 public class PayOrderTimeoutListener {
 
     @Resource
@@ -33,7 +35,7 @@ public class PayOrderTimeoutListener {
         cancelOrderRequest.setOrderType(payOrderTimeoutDelayMessage.getOrderType());
         cancelOrderRequest.setOrderStatus(payOrderTimeoutDelayMessage.getOrderStatus());
         //查询当前数据库的订单实时状态
-        OrderInfo orderInfo = new LambdaQueryChainWrapper<OrderInfo>(orderInfoMapper)
+        OrderInfo orderInfo = new LambdaQueryChainWrapper<>(orderInfoMapper)
                 .eq(OrderInfo::getTid, payOrderTimeoutDelayMessage.getOrderId())
                 .one();
         String orderStatusDatabase = orderInfo.getStatus();
@@ -43,12 +45,13 @@ public class PayOrderTimeoutListener {
         }
 
         //当前时间 小于 订单实际支付截止时间
-        if (new Date().before(orderInfoDO.getExpireTime())) {
-            return true;
-        }
+//        if (new Date().before(orderInfoDO.getExpireTime())) {
+//            return true;
+//        }
 
         orderAfterSaleService.cancelOrder(cancelOrderRequest);
         log.info("关闭订单，orderId:{}", cancelOrderRequest.getOrderId());
+        return true;
     }
 
 }
