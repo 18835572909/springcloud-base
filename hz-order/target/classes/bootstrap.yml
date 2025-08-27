@@ -74,3 +74,25 @@ spring:
         # 登录所用的用户名与密码
         login-username: admin
         login-password: 123456
+
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  tx-service-group: ${spring.application.name}-tx-group
+  config:
+    type: nacos
+    nacos:
+      serverAddr: 120.27.156.17:8848
+      username: 'nacos'
+      password: 'c5964e9b6e9d'
+      group: SEATA_GROUP
+      namespace: 972637d2-2b99-468d-94e7-40277db16e9a
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 120.27.156.17:8848
+      username: 'nacos'
+      password: 'c5964e9b6e9d'
+      group: DEFAULT_GROUP
+      namespace: fb8f1866-cf38-46a8-907f-c5964e9b6e9d
