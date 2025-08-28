@@ -1,0 +1,31 @@
+base:
+  config:
+    mdb:
+      hostname: 120.27.156.17
+      dbname: db_1
+      port: 3306
+      username: 'root'
+      password: 'nZHdc8WxdK3Y'
+
+server:
+  port: 18082
+
+spring:
+  application:
+    name: storage-service
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    name: storageDataSource
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${base.config.mdb.hostname}:${base.config.mdb.port}/${base.config.mdb.dbname}?useSSL=false&serverTimezone=UTC
+    username: ${base.config.mdb.username}
+    password: ${base.config.mdb.password}
+    druid:
+      max-active: 20
+      min-idle: 2
+      initial-size: 2
+
+
+
